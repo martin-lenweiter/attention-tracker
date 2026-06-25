@@ -45,6 +45,13 @@ export const config = {
   dbPath: env.TT_DB_PATH ?? join(homedir(), ".time-tracker", "data.sqlite"),
   // Sampler cadence (seconds). Each tick attributes this much time to one label.
   sampleIntervalSec: Number(env.TT_SAMPLE_INTERVAL_SEC ?? 60),
+  // Backup target. Default is the iCloud Drive folder, which Apple syncs to cloud.
+  backup: {
+    dir:
+      env.BACKUP_DIR ??
+      join(homedir(), "Library/Mobile Documents/com~apple~CloudDocs/attention-tracker"),
+    keepDailyDays: Number(env.BACKUP_KEEP_DAILY_DAYS ?? 30),
+  },
 } as const;
 
 export type Config = typeof config;

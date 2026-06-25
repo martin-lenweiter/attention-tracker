@@ -11,6 +11,7 @@
     "mcp": "tsx src/mcp.ts",
     "idle-reporter": "tsx src/idle-reporter.ts",
     "regroup": "tsx src/regroup.ts",
+    "backup": "tsx src/backup.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },
