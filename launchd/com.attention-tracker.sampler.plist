@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Runs on the Mac mini. Install: cp to ~/Library/LaunchAgents, then
+     launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.attention-tracker.sampler.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.attention-tracker.sampler</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/martin/code/time-tracker/dist/src/sampler.js</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/martin/code/time-tracker</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/tmp/attention-tracker-sampler.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/attention-tracker-sampler.log</string>
+</dict>
+</plist>

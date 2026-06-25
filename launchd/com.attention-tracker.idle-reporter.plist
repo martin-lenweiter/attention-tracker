@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Runs on the MacBook. Install: cp to ~/Library/LaunchAgents, then
+     launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.attention-tracker.idle-reporter.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.attention-tracker.idle-reporter</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/martinlenweiter/.local/bin/node</string>
+    <string>/Users/martinlenweiter/code/time-tracker/dist/src/idle-reporter.js</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/martinlenweiter/code/time-tracker</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>IDLE_PORT</key>
+    <string>3031</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/tmp/attention-tracker-idle.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/attention-tracker-idle.log</string>
+</dict>
+</plist>
