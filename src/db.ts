@@ -12,6 +12,7 @@ export interface NewSample {
   tsEnd: number; // unix ms
   app: string | null;
   window: string | null;
+  browserUrl: string | null; // from the a11y tree; null for non-browser frames
   ocrSnippet: string | null;
   rawLabel: string | null; // null when idle
   confidence: number | null;
@@ -46,6 +47,7 @@ CREATE TABLE IF NOT EXISTS samples (
   ts_end      INTEGER NOT NULL,
   app         TEXT,
   window      TEXT,
+  browser_url TEXT,
   ocr_snippet TEXT,
   raw_label   TEXT,
   confidence  REAL,
@@ -72,20 +74,31 @@ export function openDb(path: string, now: () => number = Date.now): DB {
   db.pragma("synchronous = NORMAL");
   db.pragma("busy_timeout = 5000");
   db.exec(SCHEMA);
+  ensureColumn(db, "samples", "browser_url", "TEXT");
   // Idle is a permanent built-in category so totals always resolve.
   ensureCategory(db, IDLE_CATEGORY, now);
   return db;
 }
 
+// Add a column to an existing table if it's missing (CREATE TABLE IF NOT EXISTS
+// won't alter an already-created table). Idempotent.
+function ensureColumn(db: DB, table: string, column: string, decl: string): void {
+  const cols = db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[];
+  if (!cols.some((c) => c.name === column)) {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${decl}`);
+  }
+}
+
 export function insertSample(db: DB, s: NewSample): void {
   db.prepare(
-    `INSERT INTO samples (ts_start, ts_end, app, window, ocr_snippet, raw_label, confidence, idle)
-     VALUES (@tsStart, @tsEnd, @app, @window, @ocrSnippet, @rawLabel, @confidence, @idle)`,
+    `INSERT INTO samples (ts_start, ts_end, app, window, browser_url, ocr_snippet, raw_label, confidence, idle)
+     VALUES (@tsStart, @tsEnd, @app, @window, @browserUrl, @ocrSnippet, @rawLabel, @confidence, @idle)`,
   ).run({
     tsStart: s.tsStart,
     tsEnd: s.tsEnd,
     app: s.app,
     window: s.window,
+    browserUrl: s.browserUrl,
     ocrSnippet: s.ocrSnippet,
     rawLabel: s.rawLabel,
     confidence: s.confidence,
