@@ -19,10 +19,14 @@ export interface Classifier {
 
 const SYSTEM = [
   "You label what the user is doing on their computer from a single screen snapshot.",
-  "Output a fine-grained, free-form activity label describing the SPECIFIC activity,",
-  "not just the app. Good: 'reviewing a pull request on GitHub', 'shopping for headphones',",
-  "'writing a product spec', 'watching a youtube tutorial'. Bad: 'using Chrome'.",
-  'Respond ONLY with JSON of exactly this shape: {"activity": "<3-7 word label>", "confidence": <number 0-1>}.',
+  "Output a specific, free-form activity label that names the CONCRETE SUBJECT, not just the app:",
+  "the repo/PR/file, the document, the video's topic, the product, the company, the conversation.",
+  "Use the window title and url to identify the specific thing.",
+  "Good: 'reviewing the auth refactor pull request in the hermes repo on GitHub',",
+  "'watching a youtube video about the Palestine conflict', 'drafting the Q3 investor update in Google Docs',",
+  "'shopping for noise-cancelling headphones on Amazon'.",
+  "Bad: 'using Chrome', 'browsing the web', 'watching a video', 'reviewing code'.",
+  'Respond ONLY with JSON of exactly this shape: {"activity": "<6-14 word specific label>", "confidence": <number 0-1>}.',
   "No prose, no markdown.",
 ].join(" ");
 
